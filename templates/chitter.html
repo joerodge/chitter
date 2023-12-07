@@ -2,4 +2,11 @@
 <html lang=en>
 <title>Chitter</title>
 <h1>Welcome to Chitter</h1>
-<p>hello</p>
+{% for peep in peeps %}
+<b>{{ users[peep.id] }}</b>
+<p>{{ peep.content }} ({{ peep.time_stamp[:-7] }})</p>
+<br>
+{% endfor %}
+<br>
+<a href="\users\new">Create an account</a>&nbsp;&nbsp;&nbsp;<a href="\peeps\new">Create a new peep</a>
+</html>

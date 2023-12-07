@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang=en>
+    <head><title>Post a New Peep</title></head>
+    <body>
+        {% if errors %}
+        <p class="t-errors">
+            <font color="red">Error: {{ errors }}</font>
+        </p>
+        {% endif %}
+        <h1>Post a new peep</h1>
+        <form action="/peeps" method="POST">
+        <p>
+            <label for="username">Username</label><br>
+            <input type="text" name="username" id="username">
+        </p>
+        <p>
+            <label for="content">Content</label><br>
+            <textarea name="content" id="content" rows="4" cols="50"></textarea>
+        </p>
+        <p>
+            <input type="submit" value="Post">
+        </p>
+        </form>
+        <a href="/">--Back to home--</a>
+    </body>
+</html>

@@ -1,6 +1,6 @@
 from lib.peep import Peep, PeepRepository
 
-## TESTS FROM PEEP CLASS
+## TESTS FOR PEEP CLASS
 
 def test_peep_init():
     peep = Peep(1, 'Test peep', '2023-12-07 11:09:44.176188', 2)
@@ -48,8 +48,9 @@ def test_find_by_id(db_connection):
 def test_create_new_peep(db_connection):
     db_connection.seed('seeds/peep.sql')
     peep_repo = PeepRepository(db_connection)
-    peep_id = peep_repo.create_new('Test create new peep for user 1', '2023-12-07 12:19:07.595786', 1)
-    assert peep_id == 5
+    peep = Peep(None, 'Test create new peep for user 1', '2023-12-07 12:19:07.595786', 1)
+    return_peep_id = peep_repo.create_new(peep)
+    assert return_peep_id == 5
     assert peep_repo.all() == [
         Peep(1, 'Test peep1 from user 1', '2023-12-07 11:09:44.176188', 1),
         Peep(2, 'Test peep2 from user 1', '2023-12-07 11:32:29.716127', 1),

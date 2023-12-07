@@ -1,15 +1,76 @@
 import os
-from flask import Flask, request, render_template
+from flask import Flask, request, redirect, render_template
 from lib.database_connection import get_flask_database_connection
+from lib.user import User, UserRepository
+from lib.peep import Peep, PeepRepository
+from datetime import datetime
 
-# Create a new Flask app
 app = Flask(__name__)
 
-# == Your Routes Here ==
 @app.route('/')
 def main_page():
-    return render_template('chitter.html')
+    connection = get_flask_database_connection(app)
+    peep_repo = PeepRepository(connection)
+    user_repo = UserRepository(connection) 
+    peeps = peep_repo.all()
+    users = {}
+    for peep in peeps:
+        user = user_repo.get_user_by_id(peep.user_id)
+        users[peep.id] = user.username
+    return render_template('chitter.html', peeps=peeps[::-1], users=users)
 
+
+@app.route('/users/new', methods=['GET'])
+def new_user():
+    return render_template('new_user.html')
+
+
+@app.route('/users/<id>', methods=['GET'])
+def single_user(id):
+    connection = get_flask_database_connection(app)
+    user_repo = UserRepository(connection)
+    user = user_repo.get_user_by_id(id)
+    return render_template('user.html', user=user)
+
+
+@app.route('/users', methods=['POST'])
+def add_new_user():
+    name = request.form['name']
+    email = request.form['email'].lower()
+    username = request.form['username'].lower()
+    password = request.form['password']
+    new_user = User(None, name, username, email, password)
+    connection = get_flask_database_connection(app)
+    user_repo = UserRepository(connection)
+    errors = user_repo.check_user(new_user)
+    if errors:
+        return render_template('new_user.html', errors=', '.join(errors))
+    else:
+        new_id = user_repo.create_user(new_user)
+        return redirect(f"/users/{new_id}")
+
+
+@app.route('/peeps/new', methods=['GET'])
+def new_peep():
+    return render_template('new_peep.html')
+
+
+@app.route('/peeps', methods=['POST'])
+def create_new_peep():
+    connection = get_flask_database_connection(app)
+    peep_repo = PeepRepository(connection)
+    user_repo = UserRepository(connection) 
+    username = request.form['username'].strip().lower()
+    content = request.form['content'].strip()
+    timestamp = str(datetime.now())
+    user = user_repo.get_user_by_username(username)
+    if not user:
+        return render_template('new_peep.html', errors="User doesn't exist")
+    
+    peep = Peep(None, content, timestamp, user.id)
+    peep_repo.create_new(peep)
+    return redirect('/')
+    
 
 # These lines start the server if you run this file directly
 # They also start the server configured to use the test database

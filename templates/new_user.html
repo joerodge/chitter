@@ -1,0 +1,34 @@
+<!doctype html>
+<html lang=en>
+    <head><title>Create an Account</title></head>
+    <body>
+        {% if errors %}
+        <p class="t-errors">
+            <font color="red">Error: {{ errors }}</font>
+        </p>
+        {% endif %}
+        <h1>Create an account</h1>
+        <form action="/users" method="POST">
+        <p>
+            <label for="name">Name</label><br>
+            <input type="text" name="name" id="name">
+        </p>
+        <p>
+            <label for="email">Email</label><br>
+            <input type="text" name="email" id="email">
+        </p>
+        <p>
+            <label for="username">Username</label><br>
+            <input type="text" name="username" id="username">
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="password">
+        </p>
+        <p>
+            <input type="submit" value="Create Account">
+        </p>
+        </form>
+        <a href="/">--Back to home--</a>
+    </body>
+</html>

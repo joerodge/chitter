@@ -34,9 +34,10 @@ class PeepRepository:
         )
         return Peep(rows[0]['id'], rows[0]['content'], str(rows[0]['time_stamp']), rows[0]['user_id'])
 
-    def create_new(self, content, time_stamp, user_id):
+    def create_new(self, peep):
         rows = self._connection.execute(
             "INSERT INTO peeps(content, time_stamp, user_id) " \
-            "VALUES (%s, %s, %s) RETURNING ID", [content, time_stamp, user_id]
+            "VALUES (%s, %s, %s) RETURNING ID", [peep.content, peep.time_stamp, peep.user_id]
         )
         return rows[0]['id']
+    
