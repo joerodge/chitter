@@ -48,6 +48,8 @@ def test_is_valid_on_emails():
         'joe.hello@email.com',
         'tom.harry@cab.gov.uk',
         'tom.harry@gmail.gov.something.uk',
+        'joe.hello.hello@something.com',
+        'john@12345.com',
     ]
     invalid = [
         'joe%$@email.com',
@@ -66,18 +68,20 @@ def test_is_valid_on_emails():
         'hello.@hotmail.com',
         'joe@@mail.com',
         'joe@hello.com.',
+        'joe_hello@hotmail.co_m',
+        'joe_hello@hotmail.1com',
     ]
     valid_tests = []
     for email in valid:
         user = User(None, 'Test name', 'TestUsername', email, 'testpassword')
         valid_tests.append(user.is_valid())
-    assert valid_tests == [True]*5
+    assert valid_tests == [True]*7
 
     invalid_tests = []
     for email in invalid:
         user = User(None, 'Test name', 'TestUsername', email, 'testpassword')
         invalid_tests.append(user.is_valid())
-    assert invalid_tests == [False]*16
+    assert invalid_tests == [False]*18
 
 
 ## TESTS FOR USER REPOSITORY CLASS

@@ -14,7 +14,7 @@ class User:
             return False
         if not re.match(r'^\w+$', self.username):
             return False
-        if not re.match(r'^\w+\.?\w+@\w+(\.\w+)+$', self.email):
+        if not re.match(r'^\w+(\.\w+)*@\w+(\.[a-z]+)+$', self.email):
             return False
         return True
 
