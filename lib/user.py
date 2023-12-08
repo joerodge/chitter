@@ -1,4 +1,5 @@
 from dataclasses import dataclass
+import re
 
 @dataclass
 class User:
@@ -8,8 +9,14 @@ class User:
     email: str
     password: str
 
-    def check_user(self):
-        pass
+    def is_valid(self):
+        if '' in [self.name, self.username, self.email, self.password]:
+            return False
+        if not re.match(r'^\w+$', self.username):
+            return False
+        if not re.match(r'^\w+\.?\w+@\w+(\.\w+)+$', self.email):
+            return False
+        return True
 
 
 class UserRepository:

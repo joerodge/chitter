@@ -1,12 +1,70 @@
 <!doctype html>
 <html lang=en>
+<head>
+<style>
+.container {
+    border: 2px solid lightseagreen;
+    background-color: rgb(49, 219, 210);
+    border-radius: 5px;
+    padding: 20px;
+    margin: auto;
+    margin-bottom: 10px;
+    width: 50%;
+}
+.darker {
+    border: 2px solid rgb(49, 219, 210);
+    background-color: lightseagreen;
+}
+.container::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.time {
+    float: right;
+    color: #aaa;
+}
+.time-dark {
+    color: #bdbdbd;
+}
+
+.heading {
+    text-align: center;
+    color: rgb(29, 94, 134);
+    font-family: courier;
+    font-size: 300%;
+}
+.top-links {
+    text-align: center;
+    color: rgb(40, 122, 173);
+    font-family: courier;
+    font-size: 200%;
+    margin-bottom: 30px;
+}
+body {background-color: rgb(200, 251, 255);}
+
+</style>
 <title>Chitter</title>
-<h1>Welcome to Chitter</h1>
-{% for peep in peeps %}
-<b>{{ users[peep.id] }}</b>
-<p>{{ peep.content }} ({{ peep.time_stamp[:-7] }})</p>
+</head>
+<h1 class="heading">Welcome to Chitter</h1>
+<div class="top-links"><a href="\users\new">Create an account</a>&nbsp;&nbsp;&nbsp;<a href="\peeps\new">Create a new peep</a></div>
 <br>
+{% for peep in peeps %}
+{% if peep.id % 2 == 0 %}
+<div class="container">
+    <b>{{ users[peep.id] }}:</b>
+    <p>{{ peep.content }}</p>
+    <span class="time">({{ peep.time_stamp[:-7] }})</span>
+</div>
+{% else %}
+<div class="container darker">
+    <b>{{ users[peep.id] }}:</b>
+    <p>{{ peep.content }}</p>
+    <span class="time time-dark">({{ peep.time_stamp[:-7] }})</span>
+</div>
+{% endif %}
 {% endfor %}
 <br>
-<a href="\users\new">Create an account</a>&nbsp;&nbsp;&nbsp;<a href="\peeps\new">Create a new peep</a>
+
 </html>

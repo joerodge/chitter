@@ -16,6 +16,69 @@ def test_user_equal():
     print(user2)
     assert user == user2
 
+def test_is_valid_method_with_empty_strs():
+    user = User(None, 'Test name', 'TestUsername', 'test@email.com', 'testpassword')
+    assert user.is_valid()
+    user = User(None, '', 'TestUsername', 'test@email.com', 'testpassword')
+    assert not user.is_valid()
+    user = User(None, '', '', '', '')
+    assert not user.is_valid()
+
+"""
+Test username is only valid for letters and numbers and underscore, no spaces
+or special chars
+"""
+def test_is_valid_method_usernames():
+    user = User(None, 'Test name', 'TestUsername', 'test@email.com', 'testpassword')
+    assert user.is_valid()
+    user = User(None, 'Test name', 'Test_Username99', 'test@email.com', 'testpassword')
+    assert user.is_valid()
+    # space in user name is invalid
+    user = User(None, 'Test name', 'Test Username', 'test@email.com', 'testpassword')
+    assert not user.is_valid()
+    # special char invalid
+    user = User(None, 'Test name', 'Test$Username', 'test@email.com', 'testpassword')
+    assert not user.is_valid()
+
+
+def test_is_valid_on_emails():
+    valid = [
+        'joe_hello@hotmail.com',
+        'tony89@gmail.com',
+        'joe.hello@email.com',
+        'tom.harry@cab.gov.uk',
+        'tom.harry@gmail.gov.something.uk',
+    ]
+    invalid = [
+        'joe%$@email.com',
+        'joe hello@gov.uk',
+        'john@hello',
+        'joe-89@email.com',
+        'hello',
+        'hello@',
+        '@.com',
+        'hello@.com',
+        'joe@hello..com',
+        'joe.com',
+        'joe@email.',
+        'joe..hello@mail.com',
+        '.hello@mail.com',
+        'hello.@hotmail.com',
+        'joe@@mail.com',
+        'joe@hello.com.',
+    ]
+    valid_tests = []
+    for email in valid:
+        user = User(None, 'Test name', 'TestUsername', email, 'testpassword')
+        valid_tests.append(user.is_valid())
+    assert valid_tests == [True]*5
+
+    invalid_tests = []
+    for email in invalid:
+        user = User(None, 'Test name', 'TestUsername', email, 'testpassword')
+        invalid_tests.append(user.is_valid())
+    assert invalid_tests == [False]*16
+
 
 ## TESTS FOR USER REPOSITORY CLASS
 

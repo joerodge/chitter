@@ -19,7 +19,6 @@ def main_page():
         users[peep.id] = user.username
     return render_template('chitter.html', peeps=peeps[::-1], users=users)
 
-
 @app.route('/users/new', methods=['GET'])
 def new_user():
     return render_template('new_user.html')
@@ -35,11 +34,15 @@ def single_user(id):
 
 @app.route('/users', methods=['POST'])
 def add_new_user():
-    name = request.form['name']
-    email = request.form['email'].lower()
-    username = request.form['username'].lower()
+    name = request.form['name'].strip()
+    email = request.form['email'].strip().lower()
+    username = request.form['username'].strip().lower()
     password = request.form['password']
+    
     new_user = User(None, name, username, email, password)
+    if not new_user.is_valid():
+        return render_template('new_user.html', errors="Invalid entries")
+    
     connection = get_flask_database_connection(app)
     user_repo = UserRepository(connection)
     errors = user_repo.check_user(new_user)
