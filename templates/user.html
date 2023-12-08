@@ -1,6 +1,9 @@
 <!doctype html>
 <html lang=en>
 <title>Chitter</title>
+{% if just_logged_in %}
+<b>You have sucessfully logged in</b>
+{% endif %}
 <h1>User {{ user.username }}</h1>
 <b>Name: {{ user.name }}</b>
 <p>Email: {{ user.email }}</p>

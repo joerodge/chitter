@@ -10,8 +10,7 @@
         <h1>Post a new peep</h1>
         <form action="/peeps" method="POST">
         <p>
-            <label for="username">Username</label><br>
-            <input type="text" name="username" id="username">
+            <label>Posting as {{ user.username }}</label><br>
         </p>
         <p>
             <label for="content">Content</label><br>

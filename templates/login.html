@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang=en>
+    <head><title>Login</title></head>
+    <body>
+        {% if errors %}
+        <p class="t-errors">
+            <font color="red">Error: {{ errors }}</font>
+        </p>
+        {% endif %}
+        <h1>Login</h1>
+        <form action="/login" method="POST">
+        <p>
+            <label for="username">Username</label><br>
+            <input type="text" name="username" id="username">
+        </p>
+        <p>
+            <label for="password">Password</label><br>
+            <input type="password" name="password" id="password">
+        </p>
+        <p>
+            <input type="submit" value="Login">
+        </p>
+        </form>
+        <a href="/">--Back to home--</a>
+    </body>
+</html>

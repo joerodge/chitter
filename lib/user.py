@@ -1,5 +1,6 @@
 from dataclasses import dataclass
 import re
+import hashlib
 
 @dataclass
 class User:
@@ -40,10 +41,12 @@ class UserRepository:
             return User(r['id'], r['name'], r['username'], r['email'], r['password'])
 
     def create_user(self, user):
+        binary_password = user.password.encode("utf-8")
+        hashed_password = hashlib.sha256(binary_password).hexdigest()
         rows = self._connection.execute(
             "INSERT INTO users (name, username, email, password) " \
             "VALUES (%s, %s, %s, %s) RETURNING ID",
-            [user.name, user.username, user.email, user.password]
+            [user.name, user.username, user.email, hashed_password]
         )
         return rows[0]['id']
     
@@ -67,4 +70,11 @@ class UserRepository:
         if user_to_check.username in usernames:
             errors.append(f'{user_to_check.username} already in use')
         return errors
-            
+    
+    def check_password(self, username, password_attempt):
+        binary_password_attempt = password_attempt.encode("utf-8")
+        hashed_password_attempt = hashlib.sha256(binary_password_attempt).hexdigest()
+        rows = self._connection.execute(
+            'SELECT * FROM users WHERE username = %s AND password = %s',
+            [username, hashed_password_attempt])
+        return len(rows) > 0
