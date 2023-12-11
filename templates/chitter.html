@@ -54,7 +54,15 @@ a:hover, a:active { text-decoration: none; color:black } */
 <title>Chitter</title>
 </head>
 <h1 class="heading">Welcome to Chitter</h1>
-<div class="top-links"><a href="/users/new">Create account</a>&nbsp;&nbsp;&nbsp;<a href="/peeps/new">Post peep</a>&nbsp;&nbsp;&nbsp;<a href="/login">Login</a>&nbsp;&nbsp;&nbsp;<a href="/logout">Log out</a></div>
+<div class="top-links">
+    <a href="/users/new">Create account</a>&nbsp;&nbsp;&nbsp;
+    <a href="/peeps/new">Post peep</a>&nbsp;&nbsp;&nbsp;
+    {% if logged_in %}
+    <a href="/logout">Log out</a>
+    {% else %}
+    <a href="/login">Login</a>
+    {% endif %}
+</div>
 <br>
 {% for peep in peeps %}
 {% if peep.id % 2 == 0 %}

@@ -19,7 +19,13 @@ def main_page():
     for peep in peeps:
         user = user_repo.get_user_by_id(peep.user_id)
         users[peep.id] = user.username
-    return render_template('chitter.html', peeps=peeps[::-1], users=users)
+
+    if 'user_id' in session:
+        logged_in = True
+    else:
+        logged_in = False
+    
+    return render_template('chitter.html', peeps=peeps[::-1], users=users, logged_in=logged_in)
 
 @app.route('/login')
 def login_page():
@@ -71,7 +77,6 @@ def add_new_user():
     else:
         new_id = user_repo.create_user(new_user)
         return redirect(f"/users/{new_id}")
-
 
 @app.route('/peeps/new', methods=['GET'])
 def new_peep():
